@@ -1,0 +1,90 @@
+<view class="container">
+  <view class="header">
+    <view class="avatar">
+      <text class="avatar-text">{{userInfo.avatarText || '设'}}</text>
+    </view>
+    <view class="user-name">{{userInfo.full_name || '未知用户'}}</view>
+    <view class="user-id">{{userInfo.username || ''}}</view>
+  </view>
+
+  <view class="menu-section">
+    <view class="section-title">账户管理</view>
+    
+    <view class="menu-item" bindtap="goToPatient">
+      <view class="menu-icon">👤</view>
+      <view class="menu-content">
+        <view class="menu-title">个人信息</view>
+        <view class="menu-desc">查看和编辑个人资料</view>
+      </view>
+      <view class="menu-arrow">></view>
+    </view>
+
+    <view class="menu-item" bindtap="refreshData">
+      <view class="menu-icon">🔄</view>
+      <view class="menu-content">
+        <view class="menu-title">刷新数据</view>
+        <view class="menu-desc">重新获取最新信息</view>
+      </view>
+      <view class="menu-arrow">></view>
+    </view>
+
+    <view class="menu-item" bindtap="scanQRCode">
+      <view class="menu-icon">📱</view>
+      <view class="menu-content">
+        <view class="menu-title">扫描二维码</view>
+        <view class="menu-desc">扫描二维码获取信息</view>
+      </view>
+      <view class="menu-arrow">></view>
+    </view>
+  </view>
+
+  <view class="menu-section">
+    <view class="section-title">应用信息</view>
+    
+    <view class="menu-item">
+      <view class="menu-icon">ℹ️</view>
+      <view class="menu-content">
+        <view class="menu-title">应用版本</view>
+        <view class="menu-desc">医院管理系统 v1.0.0</view>
+      </view>
+    </view>
+
+    <view class="menu-item">
+      <view class="menu-icon">📞</view>
+      <view class="menu-content">
+        <view class="menu-title">客服电话</view>
+        <view class="menu-desc">400-123-4567</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="logout-section">
+    <button class="logout-btn" bindtap="showLogoutModal" disabled="{{loading}}">
+      {{loading ? '处理中...' : '退出登录'}}
+    </button>
+  </view>
+</view>
+
+<!-- 退出登录确认弹窗 -->
+<view class="modal {{showModal ? 'show' : ''}}" catchtouchmove="preventMove">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">确认退出</text>
+    </view>
+    
+    <view class="modal-body">
+      <text class="modal-text">确定要退出登录吗？</text>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="modal-btn cancel-btn" bindtap="hideLogoutModal">取消</button>
+      <button class="modal-btn confirm-btn" bindtap="confirmLogout" disabled="{{logoutLoading}}">{{logoutLoading ? '退出中...' : '确定'}}</button>
+    </view>
+  </view>
+</view>
+
+<!-- 加载提示 -->
+<view class="loading-overlay {{loading ? 'show' : ''}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>

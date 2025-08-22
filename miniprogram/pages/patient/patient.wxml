@@ -1,0 +1,120 @@
+<scroll-view class="container" scroll-y="true" enhanced="true" show-scrollbar="false">
+  <view class="header">
+    <view class="avatar">
+      <text class="avatar-text">{{patientInfo.avatarText || '患'}}</text>
+    </view>
+    <view class="user-name">{{patientInfo.user_info && patientInfo.user_info.full_name || '未知患者'}}</view>
+    <view class="user-id">ID: {{patientInfo.user_info && patientInfo.user_info.username || '未知'}}</view>
+  </view>
+
+  <view class="info-card">
+    <view class="card-title">基本信息</view>
+    
+    <view class="info-item">
+      <view class="info-label">姓名</view>
+      <view class="info-value">{{patientInfo.user_info && patientInfo.user_info.full_name || '未设置'}}</view>
+    </view>
+    
+    <view class="info-item">
+      <view class="info-label">用户名</view>
+      <view class="info-value">{{patientInfo.user_info && patientInfo.user_info.username || '未设置'}}</view>
+    </view>
+    
+    <view class="info-item">
+      <view class="info-label">手机号码</view>
+      <view class="info-value editable" bindtap="editMobile">
+        {{patientInfo.mobile || '未设置'}}
+        <text class="edit-icon">✏️</text>
+      </view>
+    </view>
+    
+    <view class="info-item">
+      <view class="info-label">地址</view>
+      <view class="info-value editable" bindtap="editAddress">
+        {{patientInfo.address || '未设置'}}
+        <text class="edit-icon">✏️</text>
+      </view>
+    </view>
+    
+    <view class="info-item">
+      <view class="info-label">症状描述</view>
+      <view class="info-value editable" bindtap="editSymptoms">
+        {{patientInfo.symptoms || '未设置'}}
+        <text class="edit-icon">✏️</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="card-title">医疗信息</view>
+    
+    <view class="info-item">
+      <view class="info-label">分配医生</view>
+      <view class="info-value">{{patientInfo.assigned_doctor_name || '未分配'}}</view>
+    </view>
+    
+    <view class="info-item">
+      <view class="info-label">入院日期</view>
+      <view class="info-value">{{patientInfo.admitDate || '未设置'}}</view>
+    </view>
+    
+    <view class="info-item">
+      <view class="info-label">状态</view>
+      <view class="info-value">
+        <text class="status {{patientInfo.status ? 'active' : 'inactive'}}">
+          {{patientInfo.status ? '正常' : '待审核'}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <view class="button-group">
+    <button class="action-btn refresh-btn" bindtap="refreshInfo" disabled="{{loading}}">
+      {{loading ? '刷新中...' : '刷新信息'}}
+    </button>
+    <button class="action-btn settings-btn" bindtap="goToSettings">
+      设置
+    </button>
+  </view>
+</scroll-view>
+
+<!-- 编辑弹窗 -->
+<view class="modal {{showEditModal ? 'show' : ''}}" catchtouchmove="preventMove">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">编辑{{editField === 'mobile' ? '手机号码' : editField === 'address' ? '地址' : '症状描述'}}</text>
+      <text class="close-btn" bindtap="closeEditModal">✕</text>
+    </view>
+    
+    <view class="modal-body">
+      <textarea 
+        wx:if="{{editField === 'symptoms'}}"
+        class="edit-textarea"
+        placeholder="请输入症状描述"
+        value="{{editValue}}"
+        bindinput="onEditValueChange"
+        maxlength="200"
+      />
+      <input 
+        wx:else
+        class="edit-input"
+        placeholder="{{editField === 'mobile' ? '请输入手机号码' : '请输入地址'}}"
+        value="{{editValue}}"
+        bindinput="onEditValueChange"
+        maxlength="{{editField === 'mobile' ? 11 : 100}}"
+        type="{{editField === 'mobile' ? 'number' : 'text'}}"
+      />
+    </view>
+    
+    <view class="modal-footer">
+      <button class="modal-btn cancel-btn" bindtap="closeEditModal">取消</button>
+      <button class="modal-btn confirm-btn" bindtap="saveEdit" disabled="{{saving}}">{{saving ? '保存中...' : '保存'}}</button>
+    </view>
+  </view>
+</view>
+
+<!-- 加载提示 -->
+<view class="loading-overlay {{loading ? 'show' : ''}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>

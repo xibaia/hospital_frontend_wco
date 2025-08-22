@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "患者信息",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom"
+}
